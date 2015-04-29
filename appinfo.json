@@ -1,0 +1,55 @@
+{
+    "appKeys": {
+        "humidity": 0,
+        "invert_color": 2,
+        "rain": 4,
+        "temperature": 1,
+        "wxtime": 3
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "Nathan Ashton",
+    "longName": "Watchface that shows weather at home",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "characterRegex": "[:A-Z]",
+                "file": "fonts/meteocons.ttf",
+                "name": "METEOCONS_38",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[:0-9]",
+                "file": "fonts/Roboto-Bold.ttf",
+                "name": "FONT_ROBOTO_BOLD_SUBSET_49",
+                "type": "font"
+            },
+            {
+                "file": "fonts/Roboto-Condensed.ttf",
+                "name": "FONT_ROBOTO_CONDENSED_21",
+                "type": "font"
+            },
+            {
+                "file": "images/no_bluetooth.png",
+                "name": "NO_BT",
+                "type": "png"
+            },
+            {
+                "file": "images/menu_icon_simplicity.png",
+                "menuIcon": true,
+                "name": "IMAGE_MENU_ICON",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "Weather Watch",
+    "uuid": "1f0b0701-cc8f-47ec-86e7-7181397f9a8e",
+    "versionCode": 1,
+    "versionLabel": "1.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
