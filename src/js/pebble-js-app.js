@@ -30,7 +30,7 @@ function getWeather() {
           hours = hours > 9 ? hours : '0' + hours;
           var u = hours + ":" + minutes;
           var raintotal = mm ? (response[0].raintotal * 25.4).toFixed(1) + "mm / " : (response[0].raintotal).toFixed(1) + "in /"; 
-          var rainfallrate = mm ? (response[0].rainfallrate * 25.4).toFixed(1) + "mmh " : (response[0].rainfallrate).toFixed(1) + "inh"; 
+          var rainfallrate = mm ? (response[0].rainfallrate * 25.4).toFixed(1) + "h " : (response[0].rainfallrate).toFixed(1) + "h"; 
           var rain = raintotal + rainfallrate;
           Pebble.sendAppMessage({
             "humidity" : humidity,

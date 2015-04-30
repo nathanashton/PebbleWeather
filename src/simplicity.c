@@ -21,6 +21,7 @@ TextLayer *text_day_layer;
 TextLayer *text_date_layer;
 TextLayer *text_time_layer;
 Layer *line_layer;
+Layer *date_holder;
 
 InverterLayer *inverter_layer = NULL;
 
@@ -74,7 +75,7 @@ static void sync_tuple_changed_callback(const uint32_t key,
       break; 
 
   }
-  vibes_short_pulse();  //Vibrate on update
+
 }
 
 // Redraw line between date and time
@@ -88,14 +89,15 @@ void bluetooth_connection_changed(bool connected) {
 
   // This seemed to get called twice on disconnect
   if (!connected && _connected) {
-    vibes_short_pulse();
 
-    if (icon_bitmap) {
-      gbitmap_destroy(icon_bitmap);
-    }
-
+  if (icon_bitmap) {
+    gbitmap_destroy(icon_bitmap);
+  }
     icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_NO_BT);
+    icon_layer = bitmap_layer_create(GRect(144-40,5,35,35));
     bitmap_layer_set_bitmap(icon_layer, icon_bitmap);
+    layer_add_child(date_holder, bitmap_layer_get_layer(icon_layer));
+
   }
   _connected = connected;
 }
@@ -139,7 +141,7 @@ void update_battery_state(BatteryChargeState battery_state) {
   static char battery_text[] = "100%";
   snprintf(battery_text, sizeof(battery_text), "%d%%",
       battery_state.charge_percent);
-  text_layer_set_text(battery_text_layer, battery_text);
+ text_layer_set_text(battery_text_layer, battery_text);
 }
 
 void handle_init(void) {
@@ -173,11 +175,11 @@ void handle_init(void) {
   text_layer_set_text_color(temp_layer, GColorWhite);
   text_layer_set_background_color(temp_layer, GColorClear);
   text_layer_set_font(temp_layer,
-      fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+      fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
   text_layer_set_text_alignment(temp_layer, GTextAlignmentRight);
   layer_add_child(weather_holder, text_layer_get_layer(temp_layer));
   
-   wxtime_layer = text_layer_create(GRect(40, 20, 144-45,28));
+   wxtime_layer = text_layer_create(GRect(3, 5, 70,28));
   text_layer_set_text_color(wxtime_layer, GColorWhite);
   text_layer_set_background_color(wxtime_layer, GColorClear);
   text_layer_set_font(wxtime_layer,
@@ -188,7 +190,7 @@ void handle_init(void) {
 
 
   // Initialize date & time text
-  Layer *date_holder = layer_create(GRect(0, 52, 144, 94));
+  date_holder = layer_create(GRect(0, 52, 144, 94));
   layer_add_child(window_layer, date_holder);
 
   ResHandle roboto_21 = resource_get_handle(RESOURCE_ID_FONT_ROBOTO_CONDENSED_21);
@@ -214,6 +216,9 @@ void handle_init(void) {
   text_layer_set_background_color(text_time_layer, GColorClear);
   text_layer_set_font(text_time_layer, fonts_load_custom_font(roboto_49));
   layer_add_child(date_holder, text_layer_get_layer(text_time_layer));
+  
+  
+
 
   // Setup messaging
   const int inbound_size = 85;
