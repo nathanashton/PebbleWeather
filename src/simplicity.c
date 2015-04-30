@@ -6,8 +6,6 @@ enum WeatherKey {
   INVERT_COLOR_KEY = 0x2,  // TUPLE_CSTRING
   WEATHER_WXTIME_KEY = 0x3,  // TUPLE_CSTRING
   WEATHER_RAIN_KEY = 0x4,  // TUPLE_CSTRING
-
-  
 };
 
 Window *window;
@@ -17,10 +15,8 @@ GBitmap *icon_bitmap = NULL;
 TextLayer *temp_layer;
 TextLayer *humidity_layer;
 TextLayer *rain_layer;
+TextLayer *rainrate_layer;
 TextLayer *wxtime_layer;
-
-
-
 TextLayer *text_day_layer;
 TextLayer *text_date_layer;
 TextLayer *text_time_layer;
@@ -32,7 +28,7 @@ InverterLayer *inverter_layer = NULL;
 TextLayer *battery_text_layer;
 
 static AppSync sync;
-static uint8_t sync_buffer[64];
+static uint8_t sync_buffer[85];
 
 void set_invert_color(bool invert) {
   if (invert && inverter_layer != NULL) {
@@ -75,7 +71,8 @@ static void sync_tuple_changed_callback(const uint32_t key,
     
     case WEATHER_RAIN_KEY:
        text_layer_set_text(rain_layer, new_tuple->value->cstring);
-      break;
+      break; 
+
   }
   vibes_short_pulse();  //Vibrate on update
 }
@@ -164,7 +161,7 @@ void handle_init(void) {
   text_layer_set_text_alignment(humidity_layer, GTextAlignmentLeft);
   layer_add_child(weather_holder, text_layer_get_layer(humidity_layer));
   
-       rain_layer = text_layer_create(GRect(8,20,60,28));
+       rain_layer = text_layer_create(GRect(8,20,90,28));
   text_layer_set_text_color(rain_layer, GColorWhite);
   text_layer_set_background_color(rain_layer, GColorClear);
   text_layer_set_font(rain_layer,
@@ -219,7 +216,7 @@ void handle_init(void) {
   layer_add_child(date_holder, text_layer_get_layer(text_time_layer));
 
   // Setup messaging
-  const int inbound_size = 64;
+  const int inbound_size = 85;
   const int outbound_size = 64;
   app_message_open(inbound_size, outbound_size);
 
